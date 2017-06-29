@@ -13,7 +13,7 @@
         action: snapcheck
         host: "{{ junos_host }}"
         passwd: "{{ credentials.password }}"
-        test_files: /root/g3/proyecto/jsnapy/health_check.yml
+        test_files: /root/g3/network-automation/jsnapy/health_check.yml
         user: "{{ credentials.username }}"
 #        name: "Check"
       register: test_check
