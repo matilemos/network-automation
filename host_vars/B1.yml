@@ -1,0 +1,10 @@
+---
+loopback: 3.3.3.3
+siteid: 36
+sitepreference: primary
+
+neighbors:
+  -
+    nodoc: C1
+  -  
+    nodoc: C2

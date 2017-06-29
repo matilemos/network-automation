@@ -1,0 +1,30 @@
+{% for neighbor in neighbors %}
+{% for vpls in hostvars[neighbor.nodoc]['vplss'] %}
+routing-instances {
+	VPLS-{{vpls.idvpn}} {  
+		instance-type vpls;
+		vlan-id none;
+		route-distinguisher {{loopback}}:{{vpls.idvpn}};
+		vrf-target target:{{vpls.idvpn}}:{{vpls.idvpn}};
+		protocols {
+			vpls {
+				no-control-word;
+				site-range 50;
+				no-tunnel-services;
+				site VPLS-{{vpls.idvpn}}-{{siteid}} {
+					site-identifier {{siteid}};
+					multi-homing;
+					site-preference {{sitepreference}};
+				}
+				vpls-id {{vpls.idvpn}};
+				ignore-encapsulation-mismatch;
+				mesh-group ldp-{{vpls.idvpn}} {
+					local-switching;
+					neighbor {{hostvars[neighbor.nodoc]['loopback']}};
+				}
+			}
+		}
+	}
+}
+{% endfor %}
+{% endfor %}

@@ -1,0 +1,23 @@
+--- 
+- 
+  connection: local
+  gather_facts: false
+  hosts: all
+  roles:
+  - Juniper.junos
+
+  tasks:
+
+    - 
+      junos_jsnapy: 
+        action: snapcheck
+        host: "{{ junos_host }}"
+        passwd: "{{ credentials.password }}"
+        test_files: /root/g3/proyecto/jsnapy/health_check.yml
+        user: "{{ credentials.username }}"
+#        name: "Check"
+      register: test_check
+
+    - name: Debug jsnapy
+      debug: 
+        msg: "{{ test_check }}"

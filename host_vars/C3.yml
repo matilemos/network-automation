@@ -1,0 +1,46 @@
+---
+loopback: 5.5.5.5
+siteid: 9
+
+ldpnhs:
+ -
+    ip: 4.4.4.4
+ 
+
+vrfs:
+ - 
+    idvpn: 30
+    interfaces:
+      -
+        name: ge-0/0/4
+        vlan: 300
+        lan: 100.3.1.1/24
+      -   
+        name: ge-0/0/4
+        vlan: 301
+        lan: 100.3.2.1/24
+
+ -    
+    idvpn: 31
+    interfaces:
+      -
+        name: ge-0/0/4
+        vlan: 302
+        lan: 200.3.3.1/24
+
+vplss:
+  - 
+    idvpn: 40
+    interfaces: 
+      -
+        name: ge-0/0/4
+        vlan: 400
+      -   
+        name: ge-0/0/4
+        vlan: 401
+  - 
+    idvpn: 41
+    interfaces: 
+      -
+        name: ge-0/0/4
+        vlan: 402

@@ -1,0 +1,52 @@
+{% for vrf in vrfs %}
+routing-instances {
+    L3VPN_{{vrf.idvpn}} {
+        instance-type vrf;
+		{% for interface in vrf.interfaces %}
+		interface {{interface.name}}.{{interface.vlan}};
+		{% endfor %}
+        route-distinguisher {{loopback}}:{{vrf.idvpn}};
+        vrf-import IMPORT-VRF-{{vrf.idvpn}};
+        vrf-export EXPORT-VRF-{{vrf.idvpn}};
+        vrf-table-label;
+    }
+}
+
+interfaces {
+	{% for interface in vrf.interfaces %}
+	{{interface.name}} {
+    	unit {{interface.vlan}} {
+		  vlan-id {{interface.vlan}};
+		  family inet {
+			 address {{interface.lan}};
+		  }
+	   }
+    }
+	{% endfor %}
+}
+
+policy-options {
+    policy-statement EXPORT-VRF-{{vrf.idvpn}} {
+        term 1 {
+            from protocol [ direct static ];
+            then {
+                community add VRF{{vrf.idvpn}};
+                accept;
+            }
+        }
+    }
+    policy-statement IMPORT-VRF-{{vrf.idvpn}} {
+        term 1 {
+            from {
+                protocol bgp;
+                community VRF{{vrf.idvpn}};
+            }
+            then accept;
+        }
+        term 10 {
+            then reject;
+        }
+    }
+    community VRF{{vrf.idvpn}} members target:{{vrf.idvpn}}:{{vrf.idvpn}};
+}
+{% endfor %}

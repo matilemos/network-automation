@@ -1,0 +1,42 @@
+--- 
+- 
+  connection: local
+  gather_facts: false
+  hosts: nodos-C
+  roles:
+   - Juniper.junos
+
+  tasks:
+
+    - 
+      template: "src='templates/l2vpn_nodo_c.j2' dest='files/{{inventory_hostname}}_l2vpns.conf'"
+
+    -
+      junos_config:
+        provider: "{{credentials}}"
+        src: "files/{{inventory_hostname}}_l2vpns.conf"
+        src_format: text
+        comment: 'adding some users'
+        host: "{{junos_host}}"
+      name: "Create VPLS"
+      
+- 
+  connection: local
+  gather_facts: false
+  hosts: nodos-B
+  roles:
+   - Juniper.junos
+
+  tasks:
+
+    - 
+      template: "src='templates/l2vpn_nodo_b.j2' dest='files/{{inventory_hostname}}_l2vpns.conf'"
+
+    -
+      junos_config:
+        provider: "{{credentials}}"
+        src: "files/{{inventory_hostname}}_l2vpns.conf"
+        src_format: text
+        comment: 'adding some users'
+        host: "{{junos_host}}"
+      name: "Create VPLS"

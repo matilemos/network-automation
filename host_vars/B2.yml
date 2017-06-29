@@ -1,0 +1,10 @@
+---
+loopback: 6.6.6.6
+siteid: 36
+sitepreference: backup
+
+neighbors:
+  -
+    nodoc: C1
+  -  
+    nodoc: C2

@@ -1,0 +1,8 @@
+---
+loopback: 4.4.4.4
+siteid: 38
+sitepreference: primary
+
+neighbors:
+  -
+    nodoc: C3

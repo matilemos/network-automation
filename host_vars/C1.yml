@@ -1,0 +1,49 @@
+---
+loopback: 8.8.8.8
+siteid: 8
+
+ldpnhs:
+ -
+    ip: 3.3.3.3
+ -
+    ip: 6.6.6.6
+
+vrfs:
+ - 
+    idvpn: 30
+    interfaces: 
+      -
+        name: ge-0/0/4
+        vlan: 300
+        lan: 100.1.1.1/24      
+      -
+        name: ge-0/0/5
+        vlan: 301
+        lan: 100.1.2.1/24
+ 
+ - 
+    idvpn: 31
+    interfaces:
+    -
+      name: ge-0/0/4
+      vlan: 302
+      lan: 200.1.1.1/24
+
+    
+vplss:
+ - 
+    idvpn: 40
+    interfaces: 
+      -
+        name: ge-0/0/4
+        vlan: 400
+      -   
+        name: ge-0/0/5
+        vlan: 401
+ - 
+    idvpn: 41
+    interfaces: 
+      -
+        name: ge-0/0/4
+        vlan: 402
+        

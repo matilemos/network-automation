@@ -1,0 +1,17 @@
+asn-check:
+  - command: show configuration routing-options autonomous-system | display xml
+  - iterate:
+      xpath: //configuration/routing-options/autonomous-system
+      id: './as-number'
+      tests:
+        - is-equal: as-number, 64000
+          err: "Test Failed!! AS-Number is <{{post['./as-number']}}>, should be '64000'"
+          info: "Test succeeded!! AS-Number is correct: <{{post['./as-number']}}>."
+
+lo0_passive_ospf:
+  - command: show configuration protocols ospf | display xml 
+  - iterate:
+      xpath: //configuration/protocols/ospf/area/interface/[normalize-space(name) = "lo0.0"]
+      id: './passive'
+      tests:
+        - exists: passive

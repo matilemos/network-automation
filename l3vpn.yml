@@ -1,0 +1,57 @@
+--- 
+- 
+  connection: local
+  gather_facts: false
+  hosts: nodos-C
+  roles:
+  - Juniper.junos
+
+  tasks:
+
+    - 
+      junos_jsnapy: 
+        action: snap_pre
+        host: "{{ junos_host }}"
+        passwd: "{{ credentials.password }}"
+        test_files: /root/g3/proyecto/jsnapy/active_routes.yml
+        user: "{{ credentials.username }}"
+        logfile: "prueba.log"
+      name: "Collect Pre Snapshot"
+
+    - 
+      template: "src='templates/l3vpn.j2' dest='files/{{inventory_hostname}}_l3vpns.conf'"
+
+    -
+      junos_config:
+        provider: "{{credentials}}"
+        src: "files/{{inventory_hostname}}_l3vpns.conf"
+        src_format: text
+        comment: 'adding some users'
+        host: "{{junos_host}}"
+      name: "install users"
+    
+    -
+      
+      pause: seconds=4
+    
+    - name: Collect Post Snapshot
+      junos_jsnapy:
+        host: "{{ junos_host }}"
+        user: "{{ credentials.username }}"
+        passwd: "{{ credentials.password }}"
+        action: "snap_post"
+        test_files: /root/g3/proyecto/jsnapy/active_routes.yml
+
+        
+    - name: Compare snapshots
+      junos_jsnapy:
+        host: "{{ junos_host }}"
+        user: "{{ credentials.username }}"
+        passwd: "{{ credentials.password }}"
+        action: "check"
+        test_files: /root/g3/proyecto/jsnapy/active_routes.yml
+      register: test_check
+
+    - name: Debug jsnapy
+      debug: 
+        msg: "{{ test_check }}"

@@ -1,0 +1,9 @@
+[nodos-C]
+C1	junos_host=12.13.14.1	
+C2	junos_host=12.13.14.3
+C3	junos_host=12.13.14.2
+
+[nodos-B]
+B1	junos_host=12.13.14.7	
+B2	junos_host=12.13.14.5
+B3	junos_host=12.13.14.6

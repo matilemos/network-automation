@@ -1,0 +1,41 @@
+{% if(vplss)%}
+{% for vpls in vplss %}
+routing-instances {
+	VPLS-{{vpls.idvpn}} {     
+		instance-type vpls;
+		{% for interface in vpls.interfaces %}
+		interface {{interface.name}}.{{interface.vlan}};
+		{% endfor %}
+		protocols {
+			vpls {
+				encapsulation-type ethernet;
+				no-control-word;
+				no-tunnel-services;
+				vpls-id {{vpls.idvpn}};
+				mtu 1500;
+				ignore-encapsulation-mismatch;
+				{% for ldpnh in ldpnhs %}
+				neighbor {{ldpnh.ip}};
+				{% endfor %}
+				}
+		}
+	}
+}
+
+{% for interface in vpls.interfaces %}
+
+interfaces {
+	{{interface.name}} {
+		unit {{interface.vlan}} {
+			encapsulation vlan-vpls;
+			vlan-id {{interface.vlan}};
+			output-vlan-map swap;
+			family vpls;
+		}
+	}
+}
+
+
+{% endfor %}
+{% endfor %}
+{% endif %}

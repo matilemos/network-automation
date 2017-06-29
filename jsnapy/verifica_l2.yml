@@ -1,0 +1,9 @@
+l2_check:
+  - command: show vpls connections instance VPLS-40 | display xml
+  - iterate:
+      xpath: //vpls-connection-information/instance/reference-site/connection
+      id: './connection-status'
+      tests:
+        - is-equal: connection-status, Up
+          err: "Test Failed!! AS-Number is <{{post['./as-number']}}>, should be '64000'"
+          info: "Test succeeded!! AS-Number is correct: <{{post['./as-number']}}>."

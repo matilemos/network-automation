@@ -1,0 +1,19 @@
+inet0_check:
+  - command: show route summary
+  - iterate:
+      xpath: //route-table[normalize-space(table-name) = "inet.0"]
+      id: './active-route-count'
+      tests:
+        - no-diff: active-route-count
+          err: "Test Failed!!  <{{post['./active-route-count']}}>"
+          info: "Test succeeded!! Cantidad de prefijos iguales <{{post['./active-route-count']}}>."
+
+bgp_l3vpn_check:
+  - command: show route summary
+  - iterate:
+      xpath: //route-table[normalize-space(table-name) = "bgp.l3vpn.0"]
+      id: './active-route-count'
+      tests:
+        - no-diff: active-route-count
+          err: "Test Failed!!  <{{post['./active-route-count']}}>"
+          info: "Test succeeded!! Cantidad de prefijos iguales <{{post['./active-route-count']}}>."

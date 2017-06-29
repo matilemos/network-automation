@@ -1,0 +1,37 @@
+asn-check:
+  - command: show configuration routing-options autonomous-system | display xml
+  - iterate:
+      xpath: //configuration/routing-options/autonomous-system
+      id: './as-number'
+      tests:
+        - is-equal: as-number, 64000
+          err: "Test Failed!! AS-Number is <{{post['./as-number']}}>, should be '64000'"
+          info: "Test succeeded!! AS-Number is correct: <{{post['./as-number']}}>."
+
+lo0_passive_ospf:
+  - command: show configuration protocols ospf | display xml 
+  - iterate:
+      xpath: //configuration/protocols/ospf/area/interface[normalize-space(name) = "lo0.0"]
+      id: './passive'
+      tests:
+        - exists: passive
+
+ntp_check:
+  - command: show configuration system ntp | display xml
+  - iterate:
+      xpath: //configuration/system/ntp/server
+      id: './name'
+      tests:
+        - is-equal: name, 60.60.60.60
+          err: "Test Failed!! el NTP esta mal configurado<{{post['./name']}}>, should be '64000'"
+          info: "Test succeeded!! NTP is correct: <{{post['./as-number']}}>."
+
+dns_check:
+  - command: show configuration system name-server | display xml
+  - iterate:
+      xpath: //configuration/system/name-server
+      id: './name'
+      tests:
+        - is-equal: name, 80.80.80.80
+          err: "Test Failed!! el DNS esta mal configurado<{{post['./name']}}>"
+          info: "Test succeeded!! DNS is correct: <{{post['./as-number']}}>."
